@@ -45,8 +45,6 @@ public class MainActivity extends AppCompatActivity {
         permissions.add(ACCESS_FINE_LOCATION);
         permissions.add(ACCESS_COARSE_LOCATION);
 
-//        sensor tamal = new sensor(MainActivity.this);
-//        tamal.Creator(MainActivity.this, "tyagi ji");
 
         permissionsToRequest = findUnAskedPermissions(permissions);
         //get the permissions we have asked for before but are not granted..
