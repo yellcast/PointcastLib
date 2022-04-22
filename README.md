@@ -22,15 +22,11 @@ Step 2. Add the dependency
 Step :3. 
 
 public class MainActivity extends AppCompatActivity {
-
-    // For Permissions of get Locations
     private ArrayList<String> permissionsToRequest;
     private ArrayList<String> permissionsRejected = new ArrayList<>();
     private ArrayList<String> permissions = new ArrayList<>();
 
     TextView  latt, comvalue,costvalue;
-
-    // Gesture class object variable
     Gesture gesture;
     private final static int ALL_PERMISSIONS_RESULT = 101;
     LocationTrack locationTrack;
@@ -48,46 +44,35 @@ public class MainActivity extends AppCompatActivity {
         permissions.add(ACCESS_FINE_LOCATION);
         permissions.add(ACCESS_COARSE_LOCATION);
 
-//        sensor tamal = new sensor(MainActivity.this);
-//        tamal.Creator(MainActivity.this, "tyagi ji");
 
         permissionsToRequest = findUnAskedPermissions(permissions);
         //get the permissions we have asked for before but are not granted..
         //we will store this in a global list to access later.
 
-        //  Call compass function
         setupCompass();
-       //  call gesture
+
         NEWGESTure();
-        // insitialzation of gesture class
         gesture = new Gesture(this);
 
-
-      //   Permissions 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
             if (permissionsToRequest.size() > 0)
                 requestPermissions(permissionsToRequest.toArray(new String[permissionsToRequest.size()]), ALL_PERMISSIONS_RESULT);
         }
 
-        // Get Locations Coordinates
-        getLocationTrac();
+                locationTrack = new LocationTrack(MainActivity.this);
 
-    }
 
-    private void getLocationTrac() {
+                if (locationTrack.canGetLocation()) {
+                    double longitude = locationTrack.getLongitude();
+                    double latitude = locationTrack.getLatitude();
 
-        locationTrack = new LocationTrack(MainActivity.this);
-        
-        if (locationTrack.canGetLocation()) {
-            double longitude = locationTrack.getLongitude();
-            double latitude = locationTrack.getLatitude();
+                    latt.setText("Latitude:  " + Double.toString(latitude) + "\nLongitude:  " + Double.toString(longitude));
+                   // Toast.makeText(getApplicationContext(), "Longitude:" + Double.toString(longitude) + "\nLatitude:" + Double.toString(latitude), Toast.LENGTH_SHORT).show();
+                } else {
+                    locationTrack.showSettingsAlert();
+                }
 
-            latt.setText("Latitude:  " + Double.toString(latitude) + "\nLongitude:  " + Double.toString(longitude));
-            // Toast.makeText(getApplicationContext(), "Longitude:" + Double.toString(longitude) + "\nLatitude:" + Double.toString(latitude), Toast.LENGTH_SHORT).show();
-        } else {
-            locationTrack.showSettingsAlert();
-        }
     }
 
     private void NEWGESTure() {
@@ -198,20 +183,20 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @SuppressLint("NewApi")
     private void adjustArrow(float azimuth) {
         Log.d("TAG", "will set rotation from " + currentAzimuth + " to "
                 + azimuth);
 
-        
-        // get gesture values here 
         NEWGESTure();
         if (freezall.isEmpty()){
-
         }
+
         Animation an = new RotateAnimation(-currentAzimuth, -azimuth,
                 Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
                 0.5f);
         currentAzimuth = azimuth;
+
         display = (int) currentAzimuth + "";
         System.out.println("currentAzimuth=====1"+ " " +currentAzimuth +"°");
         String cardDirect;
@@ -260,10 +245,8 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         compass.start();
 
-        String kama=   gesture.gesturev;
-        costvalue.setText(kama);
-
-        getLocationTrac();
+        String gesturetext=   gesture.gesturev;
+        costvalue.setText(gesturetext);
 
     }
     @Override
@@ -271,7 +254,6 @@ public class MainActivity extends AppCompatActivity {
         super.onStop();
         Log.d("TAG", "stop compass");
         compass.stop();
-//        gesture.stop();
     }
 
 }
