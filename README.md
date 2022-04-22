@@ -1,5 +1,3 @@
-
-
 Step 1. Add the JitPack repository to your build file
 
     gradle
@@ -22,6 +20,7 @@ Step 2. Add the dependency
 Step :3. 
 
 public class MainActivity extends AppCompatActivity {
+
     private ArrayList<String> permissionsToRequest;
     private ArrayList<String> permissionsRejected = new ArrayList<>();
     private ArrayList<String> permissions = new ArrayList<>();
@@ -259,5 +258,3 @@ public class MainActivity extends AppCompatActivity {
 }
 
 ================== Happy Ending =================
-
-
